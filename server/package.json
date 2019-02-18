@@ -1,0 +1,25 @@
+{
+  "name": "img-sharing-app-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app/index.js"
+  },
+  "author": "madmax",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "eslint-config-airbnb-standard": "^3.0.1",
+    "eslint-plugin-import": "^2.16.0",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.13",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.0",
+    "eslint-plugin-node": "^8.0.1"
+  }
+}
