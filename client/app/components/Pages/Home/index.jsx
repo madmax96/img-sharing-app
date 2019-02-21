@@ -1,43 +1,22 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
 // import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import LoginRegister from './LoginRegister';
-import UserPage from './UserPage';
+import UserPage from './UserHomePage/UserPage';
 import Loader from '../../UI/Loader';
 
-class Home extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      component: null,
-    };
-  }
+const Home = ({ user }) => {
+  const ActiveComponent = user._id ? <UserPage /> : <LoginRegister />;
 
-  componentDidMount() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.setState({ component: 'login-register' });
-    }
-  }
+  return ActiveComponent;
+};
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
-  render() {
-    const { component } = this.state;
-    let ActiveComponent;
-    switch (component) {
-      case 'login-register':
-        ActiveComponent = <LoginRegister />;
-        break;
-      case 'user-page':
-        ActiveComponent = <UserPage />;
-        break;
-      default:
-        ActiveComponent = <Loader />;
-    }
+export default connect(mapStateToProps)(Home);
 
-    return ActiveComponent;
-  }
-}
 
 Home.propTypes = {
 };
-export default Home;

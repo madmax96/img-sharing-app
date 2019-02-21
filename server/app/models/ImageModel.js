@@ -47,5 +47,6 @@ ImageSchema.statics.like = async ({imageId,userId}) => {
   return image.update({$push:{likedBy:userId}});  
 }
 
+
 let ImageModel = mongoose.model('Image', ImageSchema);
 module.exports = ImageModel;

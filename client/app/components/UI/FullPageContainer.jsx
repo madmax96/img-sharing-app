@@ -6,9 +6,9 @@ const Container = ({ className, children }) => <div className={className}>{child
 
 export default styled(Container)`
   height:100vh;
-  overflow:hidden;
   background-image: url(${backgroundIMG});
   background-position: center; 
   background-repeat: no-repeat; 
   background-size: cover;
+  background-origin:padding-box;
   `;

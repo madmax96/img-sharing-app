@@ -1,5 +1,12 @@
+
+const fs = require('fs');
+const util = require('util');
+const mongoose = require('mongoose');
 const ImageModel = require('../models/ImageModel');
 const UserModel = require('../models/UserModel');
+
+fs.unlink = util.promisify(fs.unlink);
+
 
 async function getImages(req,res){
 
@@ -26,6 +33,26 @@ async function getImages(req,res){
     }
 }
 
+async function getImage(req,res){
+
+    let {url} = req.params;
+    const readStream = fs.createReadStream(`uploads/${url}`);
+    readStream.on('error',() => res.sendStatus(404));
+    readStream.pipe(res);
+}
+
+async function getImageLikes(req,res){
+
+    let {imageId} = req.params;
+    if(!mongoose.Types.ObjectId.isValid(imageId)){
+        return res.sendStatus(400);
+      }
+    const image = await ImageModel.findById(imageId);
+    if(!image) return res.sendStatus(404);
+    const {likedBy} = image;
+    const users = await Promise.all(likedBy.map(userId => UserModel.findById(userId)));
+    res.send(users);
+}
 // changing of  description or liking 
 
 async function updateImage(req,res){
@@ -62,11 +89,45 @@ async function updateImage(req,res){
 }
 
 async function crateImage(req,res){
-
+    const {imageDescription} = req.body;
+    const {storedFileName} = req;
+    const image = {
+        description:imageDescription,
+        url: storedFileName,
+        userId:req.user._id
+    }
+    try {
+        await ImageModel.create(image);
+        return res.sendStatus(200);
+    }catch(err){
+        console.log(err);
+        res.sendStatus(400);
+    }
 }
 
 async function deleteImage(req,res){
 
+    const { imageId } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(imageId)){
+        return res.sendStatus(400);
+      }
+    const image = await ImageModel.findById(imageId);
+    if(!image){
+        return res.sendStatus(404);
+    }
+    if(image.userId.toString() !== req.user._id.toString()){
+        return res.sendStatus(403);
+    }
+    try{
+        await image.delete();
+        await fs.unlink(`uploads/${image.url}`);
+        res.sendStatus(200);
+    }catch(e){
+        console.log(e);
+        res.sendStatus(500);
+    }
+
+
 }
 
-module.exports = {getImages,updateImage,crateImage,deleteImage};
+module.exports = {getImages,getImage,getImageLikes,updateImage,crateImage,deleteImage};

@@ -1,7 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import Loader from '../../UI/Loader';
 import { isEmailValid, isPasswordValid } from '../../../utils/validation';
 import Config from '../../../config';
+import { userLogin } from '../../../actions/actionCreators';
 
 const { API_URL } = Config;
 class LoginForm extends React.Component {
@@ -14,6 +17,7 @@ class LoginForm extends React.Component {
         userEmail: null,
         password: null,
       },
+      loader: false,
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -22,12 +26,19 @@ class LoginForm extends React.Component {
   }
 
   handleLogin(e) {
+    this.setState({ loader: true });
     const { userEmail: email, password } = this.state;
+    const { login } = this.props;
     e.preventDefault();
     axios.post(`${API_URL}/users/login`, {
       email, password,
-    }).then(() => {
-      alert('success');
+    }).then((response) => {
+      const user = response.data;
+      console.log(response.headers);
+      user.token = response.headers['x-auth'];
+      console.log(user.token);
+      localStorage.setItem('token', user.token);
+      login(user);
     })
       .catch(err => console.log(err));
   }
@@ -67,9 +78,8 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors, loader } = this.state;
     const canSubmit = Object.keys(errors).every(prop => errors[prop] === false);
-
     return (
       <form>
         <div className="form-group">
@@ -92,12 +102,16 @@ class LoginForm extends React.Component {
             onBlur={this.checkPassword}
           />
         </div>
-
-        <button type="submit" className="btn btn-primary" onClick={this.handleLogin} disabled={!canSubmit}>Login</button>
+        {loader ? <Loader />
+          : <button type="submit" className="btn btn-primary" onClick={this.handleLogin} disabled={!canSubmit}>Login</button>
+        }
       </form>
     );
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  login: user => dispatch(userLogin(user)),
+});
 
-export default LoginForm;
+export default connect(null, mapDispatchToProps)(LoginForm);

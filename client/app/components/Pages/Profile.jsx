@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Main = props => (
+const Main = ({ match }) => (
   <div>
     <h1>
-      <Link to="/">Reduxstagram</Link>
+      <Link to="/">{match.params.userName}</Link>
     </h1>
   </div>
 );

@@ -4,7 +4,10 @@ const initRoutes = require('./routes');
 const port = 8888;
 const bodyParser = require('body-parser');
 const cors = require('cors');
-app.use(cors());
+const corsOptions = {
+    exposedHeaders: 'x-auth',
+  };
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // setup all route handlers

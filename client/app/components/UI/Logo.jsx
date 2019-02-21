@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import React from 'react';
 
 const LogoSvg = styled.svg`
-  height:150px;
-  width:150px;
+  height:100%;
 `;
 const LogoImg = () => (
   <LogoSvg

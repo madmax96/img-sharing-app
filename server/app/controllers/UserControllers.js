@@ -38,18 +38,34 @@ async function loginUser(req,res){
       });
 }
 
-function getAuthUser(req,res){
-    res.send(req.user);
+async function getAuthUser(req,res){
+  const {user} = req;
+  try{
+    const userImages = await UserModel.getUserImages(user._id);
+    const userObject = user.toJSON();
+    userObject.images = userImages;
+    res.send(userObject);
+  }catch(e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
 }
 
-function updateAuthUser(req,res){
- // TODO
+async function updateAuthUser(req,res){
+
+  // profileImage is base64 encoded picture which will be stored as string in db
+  const {profileImage}= req.body;
+  if(!profileImage) return res.sendStatus(400);
+  try{
+    await UserModel.findByIdAndUpdate(req.user._id,{profileImage});
+    res.sendStatus(200);
+  } catch(e) {
+
+    console.log(e);
+    res.sendStatus(500);
+  }
 }
 
-
-function setProfilePicture(req,res){
-  // TODO
- }
 
 async function getUser(req,res){
 
@@ -103,5 +119,4 @@ module.exports = {
   isUserNameAvailable,
   getUser,
   updateAuthUser,
-  setProfilePicture
 }
