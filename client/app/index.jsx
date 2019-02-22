@@ -14,7 +14,7 @@ import './styles/style.scss';
 import Home from './components/Pages/Home';
 import Loader from './components/UI/Loader';
 import store from './store';
-import Profile from './components/Pages/Profile';
+import Profile from './components/Pages/Home/UserHomePage/Profile';
 import 'bootstrap';
 
 const history = createBrowserHistory();
@@ -74,6 +74,7 @@ render(r, document.getElementById('root'));
 const token = localStorage.getItem('token');
 
 if (token) {
+  store.dispatch(userLogin({ authInProgress: true }));
   axios.get(`${API_URL}/users/me`, { headers: { 'x-auth': token } })
     .then((response) => {
       const user = response.data;
@@ -82,6 +83,7 @@ if (token) {
     }).catch((e) => {
       localStorage.setItem('token', '');
       console.log(e);
+      store.dispatch(userLogin({ authInProgress: false }));
       history.push('/');
     });
 } else {

@@ -16,16 +16,14 @@ ImagePost.Header = styled.div`
     background-color:white;
     display:flex;
     align-items:center;
-    border-bottom:1px solid gray;
+    border-bottom:1px solid rgba(0,0,0,.1);
 
 `;
 
 ImagePost.Footer = styled.div`
     height: 20%;
     background-color:white;
-    display:flex;
-    align-items:center;
-    border-top:1px solid gray;
+    border-top:1px solid rgba(0,0,0,.1);
 `;
 const ImageContainer = styled.div`
     height:70%;

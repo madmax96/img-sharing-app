@@ -1,41 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 import Config from '../../../../config';
 import { newImagesFetched as newImagesFetchedAction } from '../../../../actions/actionCreators';
 import Navbar from './Navbar';
 import StyledText from '../../../UI/StyledText';
-import ImagePost from './ImagePost';
 import Loader from '../../../UI/Loader';
 import ImagePostsContainer from './ImagePostsContainer';
 
 const { API_URL } = Config;
 
-const UserPage = ({ user, newImagesFetched, images }) => {
-  const [loader, setLoader] = useState(!images.length);
+const Profile = ({ user, match }) => {
+  if (!user.token) return null;
+  const { userName } = match.params;
+  // if (userName === user.userName) return <Redirect to="/ses" />;
+  const [loader, setLoader] = useState(true);
+  const [userData, setUserData] = useState({});
   useEffect(() => {
-    if (images.length) return;
-    axios.get(`${API_URL}/images/1/5`, { headers: { 'x-auth': user.token } })
+    axios.get(`${API_URL}/users/${userName}`, { headers: { 'x-auth': user.token } })
       .then((response) => {
-        const newImages = response.data;
-        newImages.forEach((image) => {
-          image.likedByMe = image.likedBy.includes(user._id);
-        });
-        newImagesFetched(newImages);
+        setUserData(response.data);
         setLoader(false);
       })
-      .catch(err => console.log(err));
-  }, []);
+      .catch((err) => {
+        setLoader(false);
+        console.log(err);
+      });
+  }, [userName]);
 
 
   return (
     <div>
       <Navbar />
       <div className="text-center">
-        <StyledText className="mt-5">Newest Posts</StyledText>
-      </div>
-      <div className="text-center">
-        {loader ? <Loader /> : <ImagePostsContainer images={images} />}
+        {loader ? <Loader /> : <ImagePostsContainer images={userData.images} />}
       </div>
     </div>
   );
@@ -49,4 +48,4 @@ const mapDispatchToProps = dispatch => ({
   newImagesFetched: images => dispatch(newImagesFetchedAction(images)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserPage);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
