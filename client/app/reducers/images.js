@@ -1,7 +1,7 @@
 import { ACTION_NAMES } from '../actions/actionCreators';
 
 const {
-  LIKE_IMAGE, UNLIKE_IMAGE, NEW_IMAGES_FETCHED,
+  LIKE_IMAGE, LIKE_UNLIKE_IMAGE, NEW_IMAGES_FETCHED, DELETE_IMAGE_INDEX, ADD_IMAGE_INDEX,
 } = ACTION_NAMES;
 
 
@@ -14,11 +14,18 @@ function images(state = [], action) {
         }
         return image;
       });
-
-    case UNLIKE_IMAGE:
+    case DELETE_IMAGE_INDEX:
+      return state.filter(image => image._id !== action.imageId);
+    case ADD_IMAGE_INDEX:
+      return [action.image, ...state];
+    case LIKE_UNLIKE_IMAGE:
       return state.map((image) => {
         if (image._id === action.imageId) {
-          return { ...image, likedByMe: false };
+          return {
+            ...image,
+            likedBy: image.likedByMe ? image.likedBy.slice(0, -1) : [...image.likedBy, 'me'],
+            likedByMe: !image.likedByMe,
+          };
         }
         return image;
       });

@@ -56,9 +56,9 @@ async function getImageLikes(req,res){
 // changing of  description or liking 
 
 async function updateImage(req,res){
-    const { description, like } = req.body;
+    const { description, like, unlike } = req.body;
 
-    if(!description && !like) {
+    if(!description && !like && !unlike) {
         return res.sendStatus(400);
     }
 
@@ -69,6 +69,16 @@ async function updateImage(req,res){
     if(like){
         try {
             await ImageModel.like({imageId,userId});
+            return res.sendStatus(200);
+        }catch(e){
+            console.log(e);
+            return res.sendStatus(e.statusCode);
+        }
+    }
+
+    if(unlike){
+        try {
+            await ImageModel.unlike({imageId,userId});
             return res.sendStatus(200);
         }catch(e){
             console.log(e);
@@ -97,8 +107,8 @@ async function crateImage(req,res){
         userId:req.user._id
     }
     try {
-        await ImageModel.create(image);
-        return res.sendStatus(200);
+        const created =  await ImageModel.create(image);
+        return res.send(created);
     }catch(err){
         console.log(err);
         res.sendStatus(400);

@@ -91,10 +91,10 @@ async function isEmailAvailable (req,res) {
 
   const { email } = req.params;
   try{ 
-    await UserModel.find({ email });
-    res.sendStatus(400);
+    const user = await UserModel.findOne({email});
+    res.sendStatus(user ? 400 : 200);
   }catch(e) {
-    res.sendStatus(200);
+    res.sendStatus(500);
   }
  }
 
@@ -103,10 +103,11 @@ async function isEmailAvailable (req,res) {
   const {userName} = req.params;
 
   try{ 
-    await UserModel.find({userName});
-    res.sendStatus(400);
+    const user = await UserModel.findOne({userName});
+    res.sendStatus(user ? 400 : 200);
+    
   }catch(e) {
-    res.sendStatus(200);
+    res.sendStatus(500);
   }
  }
 

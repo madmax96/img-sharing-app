@@ -4,7 +4,7 @@ import Loader from './Loader';
 
 
 const ImagePost = styled.div`
-    height:20rem;
+    height:30rem;
     min-height:600px;
     border-radius:5px;
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
@@ -18,6 +18,12 @@ ImagePost.Header = styled.div`
     align-items:center;
     border-bottom:1px solid rgba(0,0,0,.1);
 
+`;
+ImagePost.Header.Img = styled.img`
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    margin-left:5px;
 `;
 
 ImagePost.Footer = styled.div`

@@ -17,6 +17,7 @@ Navbar.Logo = styled.div`
     margin-right:auto;
     margin-left:2rem;
     cursor:pointer;
+    display:flex;    
 `;
 Navbar.FirstSection = styled.div`
     margin-right:auto;

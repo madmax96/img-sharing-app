@@ -20,72 +20,41 @@ import 'bootstrap';
 const history = createBrowserHistory();
 const { API_URL } = Config;
 
-// const Playground = (props) => {
-//   const [userImage, setUserImage] = useState();
-
-//   function handleChange(e) {
-//     e.preventDefault();
-//     const image = e.target.files[0];
-//     setUserImage(window.URL.createObjectURL(image));
-//     const bodyFormData = new FormData();
-//     bodyFormData.append('image', image);
-//     axios({
-//       method: 'post',
-//       url: 'http://localhost:8888/',
-//       data: bodyFormData,
-//       config: { headers: { 'Content-Type': 'multipart/form-data' } },
-//     })
-//       .then((response) => {
-//         // handle success
-//         console.log(response);
-//       })
-//       .catch((response) => {
-//         // handle error
-//         console.log(response);
-//       });
-//   }
-//   return (
-//     <div>
-//       <form>
-//         <input type="file" accept="image/*" onChange={handleChange} />
-//           Insert Image
-//         <button className="btn btn-primary" type="submit">Upload</button>
-//         <img src={userImage} />
-//       </form>
-//     </div>
-//   );
-// };
-
 const r = (
   <Provider store={store}>
     <Router history={history}>
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/profile" component={Profile} />
-        <Route path="/users/:userName" component={Profile} />
-
+        <Route path="/profile" key="this user profile" component={Profile} />
+        <Route path="/users/:userName" key="user profile" component={Profile} />
       </Switch>
     </Router>
   </Provider>
 );
+const AppLoader = (
+  <div className="row vh-100 align-items-center justify-content-center">
+    <Loader />
+  </div>
+);
 
-render(r, document.getElementById('root'));
+render(AppLoader, document.getElementById('root'));
 
 const token = localStorage.getItem('token');
 
 if (token) {
-  store.dispatch(userLogin({ authInProgress: true }));
   axios.get(`${API_URL}/users/me`, { headers: { 'x-auth': token } })
     .then((response) => {
       const user = response.data;
       user.token = token;
       store.dispatch(userLogin(user));
+      render(r, document.getElementById('root'));
     }).catch((e) => {
       localStorage.setItem('token', '');
       console.log(e);
-      store.dispatch(userLogin({ authInProgress: false }));
+      render(r, document.getElementById('root'));
       history.push('/');
     });
 } else {
+  render(r, document.getElementById('root'));
   history.push('/');
 }

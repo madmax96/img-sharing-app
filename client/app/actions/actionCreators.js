@@ -1,9 +1,11 @@
 // increment
 export const ACTION_NAMES = {
   ADD_IMAGE: 'ADD_IMAGE',
+  ADD_IMAGE_INDEX: 'ADD_IMAGE_INDEX',
   DELETE_IMAGE: 'DELETE_IMAGE',
-  LIKE_IMAGE: 'LIKE_IMAGE',
-  UNLIKE_IMAGE: 'UNLIKE_IMAGE',
+  DELETE_IMAGE_INDEX: 'DELETE_IMAGE_INDEX',
+  LIKE_UNLIKE_IMAGE: 'LIKE_UNLIKE_IMAGE',
+  LIKE_UNLIKE_IMAGE_PROFILE: 'LIKE_UNLIKE_IMAGE_PROFILE',
   NEW_IMAGES_FETCHED: 'NEW_IMAGES_FETCHED',
   SET_PROFILE_IMAGE: 'SET_PROFILE_IMAGE',
   USER_LOGIN: 'USER_LOGIN',
@@ -31,6 +33,13 @@ export function addImage(image) {
   };
 }
 
+export function addImageIndex(image) {
+  return {
+    type: ACTION_NAMES.ADD_IMAGE_INDEX,
+    image,
+  };
+}
+
 export function setProfileImage(imageData) {
   return {
     type: ACTION_NAMES.SET_PROFILE_IMAGE,
@@ -44,21 +53,27 @@ export function deleteImage(imageId) {
   };
 }
 
-export function likeImage(imageId) {
+export function deleteImageIndex(imageId) {
   return {
-    type: ACTION_NAMES.LIKE_IMAGE,
-    imageId,
-
-  };
-}
-
-export function unlikeImage(imageId) {
-  return {
-    type: ACTION_NAMES.UNLIKE_IMAGE,
+    type: ACTION_NAMES.DELETE_IMAGE_INDEX,
     imageId,
   };
 }
 
+
+export function likeUnlikeImage(imageId) {
+  return {
+    type: ACTION_NAMES.LIKE_UNLIKE_IMAGE,
+    imageId,
+  };
+}
+
+export function likeUnlikeImageProfile(imageId) {
+  return {
+    type: ACTION_NAMES.LIKE_UNLIKE_IMAGE_PROFILE,
+    imageId,
+  };
+}
 
 export function newImagesFetched(images) {
   return {

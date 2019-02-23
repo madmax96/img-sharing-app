@@ -10,7 +10,6 @@ var authenticate = (req, res, next) => {
     req.user = user;
     req.token = token;
     next();
-    res.set('Access-Control-Expose-Headers','x-auth');
   }).catch(() => {
     res.status(401).send();
   });

@@ -4,15 +4,20 @@ import { NavLink } from 'react-router-dom';
 import NavbarUI from '../../../UI/Navbar';
 import Logo from '../../../UI/Logo';
 import { userLogout } from '../../../../actions/actionCreators';
+import StyledText from '../../../UI/StyledText';
 
 const Navbar = ({ logout }) => (
   <NavbarUI>
     <NavbarUI.Logo>
-      <Logo />
+      <div className="d-flex align-items-center">
+        <NavLink to="/">
+          <StyledText style={{ 'font-size': '1.4rem' }}>InstaFon</StyledText>
+        </NavLink>
+      </div>
     </NavbarUI.Logo>
     <NavbarUI.ThirdSection>
       <NavLink to="/profile" className="btn btn-primary mr-2">Profile</NavLink>
-      <button type="button" className="btn btn-danger" onClick={logout}>Logout</button>
+      <NavLink to="/" className="btn btn-danger" onClick={logout}>Logout</NavLink>
     </NavbarUI.ThirdSection>
   </NavbarUI>
 );

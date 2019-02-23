@@ -8,7 +8,7 @@ const corsOptions = {
     exposedHeaders: 'x-auth',
   };
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 
 // setup all route handlers
 initRoutes(app);

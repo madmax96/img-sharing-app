@@ -4,11 +4,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import LoginRegister from './LoginRegister';
 import UserPage from './UserHomePage/UserPage';
-import Loader from '../../UI/Loader';
 
 const Home = ({ user }) => {
-  const ActiveComponent = user.authInProgress ? <Loader /> : user.token ? <UserPage /> : <LoginRegister />;
-
+  const ActiveComponent = user.token ? <UserPage /> : <LoginRegister />;
   return ActiveComponent;
 };
 const mapStateToProps = state => ({

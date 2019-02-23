@@ -47,6 +47,18 @@ ImageSchema.statics.like = async ({imageId,userId}) => {
   return image.update({$push:{likedBy:userId}});  
 }
 
+ImageSchema.statics.unlike = async ({imageId,userId}) => {
+
+  if(!mongoose.Types.ObjectId.isValid(imageId)){
+    return Promise.reject({statusCode:400});
+  }
+  
+  const image = await ImageModel.findById(imageId);
+  if(!image){
+    return Promise.reject({statusCode:404});
+  }
+  return image.update({$pull:{likedBy:userId}});
+}
 
 let ImageModel = mongoose.model('Image', ImageSchema);
 module.exports = ImageModel;
