@@ -1,5 +1,7 @@
 import React from 'react';
-import { FaPlusCircle } from 'react-icons/fa';
+import {
+  FaPlusCircle, FaHeart, FaUser, FaFileContract,
+} from 'react-icons/fa';
 import HoverableImage from '../../../UI/HoverableImage';
 import PlaceholderImg from '../../../../../../public/img/placeholder.png';
 
@@ -26,12 +28,21 @@ export default ({
             />
           ) : Image}
       </div>
-      <div className="col-6 col-lg-4 mt-4">
-        <p>{userName}</p>
-        <p>{fullName}</p>
-        <p>{email}</p>
-        <p>{totalPosts}</p>
-        <p>{totalLikes}</p>
+      <div className="col-6 col-lg-4 mt-4 text-left">
+        <span className="text-primary">
+          <FaUser className="mr-2" />
+          {userName}
+        </span>
+        <p className="p-0 m-1 text-primary">{fullName}</p>
+        <p className="p-0 m-1 text-primary">{email}</p>
+        <span className="mr-3 text-info">
+          <FaFileContract className="mr-1" />
+          {totalPosts}
+        </span>
+        <span className="text-danger">
+          <FaHeart className="mr-1" />
+          {totalLikes}
+        </span>
       </div>
       {isMineProfile ? (
         <div className="col-12 col-lg-1">

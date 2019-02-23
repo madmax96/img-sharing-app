@@ -34,7 +34,7 @@ class RegisterForm extends React.Component {
     e.preventDefault();
     axios.post(`${API_URL}/users`, {
       email, password, fullName, userName,
-    }).then(() => alert('success'))
+    }).then(() => this.props.onSubmit())
       .catch(err => console.log(err));
   }
 

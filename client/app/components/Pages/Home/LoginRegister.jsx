@@ -7,9 +7,10 @@ import RegisterForm from '../../Common/Forms/RegisterForm';
 import FullPageContainer from '../../UI/FullPageContainer';
 
 class LoginRegister extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = { showSuccessmessage: false };
+  }
 
   componentDidMount() {
 
@@ -30,7 +31,8 @@ class LoginRegister extends React.Component {
       content: (
         <div className="h-100 row align-items-center justify-content-center">
           <div className="col-10 text-center">
-            <RegisterForm />
+            {this.state.showSuccessmessage && <p className="alert alert-info">Registracija uspesna</p>}
+            <RegisterForm onSubmit={() => { this.setState({ showSuccessmessage: true }); }} />
           </div>
         </div>
       ),

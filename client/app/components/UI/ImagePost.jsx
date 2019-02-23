@@ -31,7 +31,7 @@ ImagePost.Footer = styled.div`
     background-color:white;
     border-top:1px solid rgba(0,0,0,.1);
 `;
-const ImageContainer = styled.div`
+ImagePost.Content = styled.div`
     height:70%;
     display:flex;
     justify-content:center;
@@ -55,7 +55,7 @@ ImagePost.Image = ({ src }) => {
   const Image = (<img style={{ height: '100%', width: '100%' }} src={src} alt="user post" onLoad={() => onLoad(true)} />);
 
   return (
-    <ImageContainer>
+    <ImagePost.Content>
       {Image}
       {' '}
       {isLoaded ? null : (
@@ -63,7 +63,7 @@ ImagePost.Image = ({ src }) => {
           <Loader />
         </LoaderContainer>
       )}
-    </ImageContainer>
+    </ImagePost.Content>
   );
 };
 

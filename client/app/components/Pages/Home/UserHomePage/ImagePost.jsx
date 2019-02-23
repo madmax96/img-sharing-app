@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaHeart } from 'react-icons/fa';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
@@ -18,7 +18,19 @@ const ImagePost = ({
   const {
     _id: userId, email, fullName, userName, profileImage,
   } = user;
+  const [likes, toggleLikesSection] = useState(false);
 
+  const fetchLikes = () => {
+    if (likes) return toggleLikesSection(false);
+    axios.get(`${API_URL}/image/${_id}/likes`, { headers: { 'x-auth': thisUser.token } })
+      .then((response) => {
+        const users = response.data;
+        toggleLikesSection(users);
+      }).catch((err) => {
+        console.log(err);
+        alert('Something is wrong. Please try later');
+      });
+  };
   const _deleteImage = () => {
     axios.delete(`${API_URL}/images/${_id}`, { headers: { 'x-auth': thisUser.token } })
       .then(() => {
@@ -40,7 +52,9 @@ const ImagePost = ({
   return (
     <ImagePostUI>
       <ImagePostUI.Header>
-        <ImagePostUI.Header.Img src={profileImage || placeholderImg} />
+        <ImagePostUI.Header.Img
+          src={thisUser._id === userId ? thisUser.profileImage : (profileImage || placeholderImg)}
+        />
 
         <NavLink to={`/users/${userName}`} className="mr-auto pl-1">{userName}</NavLink>
         <a target="_blank" download={url} href={`${API_URL}/image/${url}?xAuth=${thisUser.token}`} className="btn btn-sm btn-outline-info mr-1">Download</a>
@@ -54,7 +68,24 @@ const ImagePost = ({
           </button>
         ) : null}
       </ImagePostUI.Header>
-      <ImagePostUI.Image src={`${API_URL}/image/${url}?xAuth=${localStorage.getItem('token')}`} />
+      {likes ? (
+        <ImagePostUI.Content>
+          <div className="h-100 align-items-center jusify-content-center d-flex flex-column">
+            <h4 className="text-primary my-3">Likes</h4>
+
+            {likes.map(user => (
+              <div>
+                <ImagePostUI.Header.Img
+                  src={user.profileImage}
+                />
+                <NavLink to={`/users/${user.userName}`} className="mr-auto pl-1">{user.userName}</NavLink>
+              </div>
+            ))}
+          </div>
+
+        </ImagePostUI.Content>
+      )
+        : <ImagePostUI.Image src={`${API_URL}/image/${url}?xAuth=${localStorage.getItem('token')}`} /> }
       <ImagePostUI.Footer>
         <div className=" h-100">
           <div className=" d-flex align-items-center">
@@ -64,7 +95,7 @@ const ImagePost = ({
               </span>
             ) : null}
             <span className="text-primary ml-2">{likedBy.length}</span>
-            <button type="button" className=" btn btn-sm btn-default ml-auto pr-2 text-primary">likes</button>
+            <button type="button" className=" btn btn-sm btn-default ml-auto pr-2 text-primary" onClick={fetchLikes}>likes</button>
           </div>
           <div className="text-left px-2 text-wrap">
             <small className="small text-primary">{description}</small>

@@ -11,7 +11,7 @@ const Navbar = ({ logout }) => (
     <NavbarUI.Logo>
       <div className="d-flex align-items-center">
         <NavLink to="/">
-          <StyledText style={{ 'font-size': '1.4rem' }}>InstaFon</StyledText>
+          <StyledText style={{ fontSize: '1.4rem' }}>InstaFon</StyledText>
         </NavLink>
       </div>
     </NavbarUI.Logo>

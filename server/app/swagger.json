@@ -1,0 +1,479 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "API Dokumentacija za InstaFon aplikaciju",
+        "description": "Opis svih REST endpointa"
+    },
+    "schemes": [
+        "http"
+    ],
+    "host": "instafon.com",
+    "paths": {
+        "/users/login": {
+            "post": {
+                "summary": "Pravljenje sesije i logovanje korisnika",
+                "description": "Ukoliko je logovanje uspesno, endpoint ce vratiti sve informacije o korisniku koji se autentifikuje",
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "kredencijali",
+                      "description": "Email i password korisnika",
+                      "required": true,
+                      "schema": {
+                        "type":"object",
+                        "properties":{
+                            "email":{
+                                "type":"string"
+                            },
+                            "password":{
+                                "type":"string"
+                            }
+                        }
+                      }
+                    }
+                  ],
+                "responses": {
+                    "200": {
+                        "description": "korisnik uspesno autentifikovan",
+                        "schema": {
+                            "type": "object",
+                                "properties": {
+                                    "fullName": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "profileImage": {
+                                        "type": "string"
+                                    },
+                                    "images":{
+                                        "type":"array",
+                                        "items":{
+                                            "type":"object",
+                                            "properties":{
+                                                "description":{
+                                                    "type":"string"
+                                                },
+                                                "url":{
+                                                    "type":"string"
+                                                },
+                                                "userId":{
+                                                    "type":"string"
+                                                },
+                                                "_id":{
+                                                    "type":"string"
+                                                },
+                                                "likedBy":{
+                                                    "type":"array",
+                                                    "items":{
+                                                        "type":"string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                            }
+                        },
+                        "headers":{
+                            "x-auth":{
+                                "type":"string",
+                                "description": "autentifikacioni token koji ce se koristiti za svaki sledeci zahtev"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Autentifikacija nije uspela. Kombinacija email/password nije tacna" 
+                    }
+                }
+            }
+        },
+
+        "/users/logout": {
+            "post": {
+                "summary": "Odjavljivanje korisnika",
+                "description": "Brisanje tokena za autentifikaciju",
+                "responses": {
+                    "200": {
+                        "description": "korisnik uspesno odjavljen"
+                    },
+                    "401": {
+                        "description": "Korisnik nije autentifikovan, odnosno token nije ispravan" 
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "summary": "Pravljenje novog korisnika",
+                "description": "Registracija korisnika",
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "kredencijali",
+                      "description": "Podaci o novom korisniku",
+                      "required": true,
+                      "schema": {
+                        "type":"object",
+                        "properties":{
+                            "email":{
+                                "type":"string"
+                            },
+                            "password":{
+                                "type":"string"
+                            },
+                            "fullName":{
+                                "type":"string"
+                            },
+                            "userName":{
+                                "type":"string"
+                            }
+                        }
+                      }
+                    }
+                  ],
+                "responses": {
+                    "200": {
+                        "description": "korisnik uspesno napravljen/registrovan"
+                    },
+                    "400": {
+                        "description": "Registracija nije uspela.Nisu poslate sve potrebne informacije ili validacija nije uspela" 
+                    }
+                }
+            }
+        },
+        "/users/me": {
+            "get": {
+                "summary": "Provera validnosti tokena",
+                "responses": {
+                    "200": {
+                        "description": "Informacije o korisniku se vracaju ukoliko je autentifikacija uspesna",
+                        "schema": {
+                            "type": "object",
+                                "properties": {
+                                    "fullName": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "profileImage": {
+                                        "type": "string"
+                                    },
+                                    "images":{
+                                        "type":"array",
+                                        "items":{
+                                            "type":"object",
+                                            "properties":{
+                                                "description":{
+                                                    "type":"string"
+                                                },
+                                                "url":{
+                                                    "type":"string"
+                                                },
+                                                "userId":{
+                                                    "type":"string"
+                                                },
+                                                "_id":{
+                                                    "type":"string"
+                                                },
+                                                "likedBy":{
+                                                    "type":"array",
+                                                    "items":{
+                                                        "type":"string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Korisnik nije autentifikovan, odnosno token nije ispravan"
+                    }
+                }
+            },
+            "patch":{
+
+                "summary": "Menjanje informacija o korisniku.Trenutno podrzana samo promena profilne slike",
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "body",
+                      "description": "Nova profilna slika korisnika, enkodirana kao base64 string",
+                      "required": true,
+                      "schema": {
+                        "type":"object",
+                        "properties":{
+                            "profileImage":{
+                                "type":"string"
+                            }
+                        }
+                      }
+                    }
+                  ],
+                "responses": {
+                    "200": {
+                        "description": "Podaci uspesno izmenjeni"
+                    },
+                    "401": {
+                        "description": "Korisnik nije autentifikovan, odnosno token nije ispravan" 
+                    }
+                }
+            }
+        },
+        "/users/:userName":{
+
+            "get": {
+                "summary": "Vraca podatke o korisniku sa datim korisnickim im",
+                "responses": {
+                    "200": {
+                        "description": "korisnik uspesno pronadjen",
+                        "schema": {
+                            "type": "object",
+                                "properties": {
+                                    "fullName": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "profileImage": {
+                                        "type": "string"
+                                    },
+                                    "images":{
+                                        "type":"array",
+                                        "items":{
+                                            "type":"object",
+                                            "properties":{
+                                                "description":{
+                                                    "type":"string"
+                                                },
+                                                "url":{
+                                                    "type":"string"
+                                                },
+                                                "userId":{
+                                                    "type":"string"
+                                                },
+                                                "_id":{
+                                                    "type":"string"
+                                                },
+                                                "likedBy":{
+                                                    "type":"array",
+                                                    "items":{
+                                                        "type":"string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autentifikacija nije uspela. Token nije ispravan" 
+                    },
+                    "404": {
+                        "description": "Korisnik sa datim korisnickim imenom nije pronadjen" 
+                    }
+                }
+            }
+        },
+
+        "/images":{
+            "post": {
+                "summary": "Upload novog posta sa slikom",
+                "parameters": [
+                    {
+                      "in": "body",
+                      "name": "Informacije o slici",
+                      "description": "Opis slike i sama slika",
+                      "required": true,
+                      "schema": {
+                        "type":"object",
+                        "properties":{
+                            "imageDescription":{
+                                "type":"string"
+                            },
+                            "image":{
+                                "type":"image"
+                            }
+                        }
+                      }
+                    }
+                  ],
+                "responses": {
+                    "200": {
+                        "description": "korisnik uspesno pronadjen",
+                        "schema": {
+                            "type": "object",
+                            "properties":{
+                                "description":{
+                                    "type":"string"
+                                },
+                                "url":{
+                                    "type":"string"
+                                },
+                                "userId":{
+                                    "type":"string"
+                                },
+                                "_id":{
+                                    "type":"string"
+                                },
+                                "likedBy":{
+                                    "type":"array",
+                                    "items":{
+                                        "type":"string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Poslati podaci nisu ispravni" 
+                    },
+                    "401": {
+                        "description": "Autentifikacija nije uspela. Token nije ispravan" 
+                    }
+                }
+            }
+        },
+
+        "/images/:imageId":{
+            "delete": {
+                "summary": "Brisanje korisnikove slike",
+                
+                "responses": {
+                    "200": {
+                        "description": "Slika uspesno obrisana"
+                    },
+                    "401": {
+                        "description": "Autentifikacija nije uspela. Token nije ispravan" 
+                    },
+                    "404": {
+                        "description": "Slika nije pronadjena" 
+                    }
+                }
+            }
+        },
+
+
+        "/images/:imageId/likes":{
+            "get": {
+                "summary": "Vraca sve korisnike koji su lajkovali sliku",
+                
+                "responses": {
+                    "200": {
+                        "description": "Korisnici uspesno vraceni",
+                        "schema":{
+                            "type":"array",
+                            "items":{
+                                "type": "object",
+                                "properties": {
+                                    "fullName": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "profileImage": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autentifikacija nije uspela. Token nije ispravan" 
+                    },
+                    "404": {
+                        "description": "Slika nije pronadjena" 
+                    }
+                }
+            }
+        },
+        "/images/:imageUrl":{
+            "get": {
+                "summary": "Zahtevanje slike sa datom url adresom",
+                "parameters": [
+                    {
+                      "in": "url",
+                      "name": "token",
+                      "description": " autentifikacioni token",
+                      "required": true,
+                      "schema": {
+                        "type":"string"
+                      }
+                    }
+                  ],
+                "responses": {
+                    "200": {
+                        "description": "Slika uspesno vracena"
+                    },
+                    "401": {
+                        "description": "Autentifikacija nije uspela. Token nije ispravan" 
+                    },
+                    "404": {
+                        "description": "Slika nije pronadjena" 
+                    }
+                }
+            }
+        },
+        "/images/:page/:perPage":{
+            "get": {
+                "summary": "Zahtevanje slika sa paginacijom",
+                "responses": {
+                    "200": {
+                        "description": "Slike uspesno vracene",
+                        "schema":{
+                            "type":"array",
+                            "items":{
+                                "type":"object",
+                                "properties":{
+                                    "description":{
+                                        "type":"string"
+                                    },
+                                    "url":{
+                                        "type":"string"
+                                    },
+                                    "userId":{
+                                        "type":"string"
+                                    },
+                                    "_id":{
+                                        "type":"string"
+                                    },
+                                    "likedBy":{
+                                        "type":"array",
+                                        "items":{
+                                            "type":"string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Autentifikacija nije uspela. Token nije ispravan" 
+                    }
+                }
+            }
+        }
+        }
+
+    }

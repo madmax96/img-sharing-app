@@ -5,7 +5,6 @@ import Config from '../../../../config';
 import { newImagesFetched as newImagesFetchedAction } from '../../../../actions/actionCreators';
 import Navbar from './Navbar';
 import StyledText from '../../../UI/StyledText';
-import ImagePost from './ImagePost';
 import Loader from '../../../UI/Loader';
 import ImagePostsContainer from './ImagePostsContainer';
 
@@ -15,7 +14,7 @@ const UserPage = ({ user, newImagesFetched, images }) => {
   const [loader, setLoader] = useState(!images.length);
   useEffect(() => {
     if (images.length) return;
-    axios.get(`${API_URL}/images/1/5`, { headers: { 'x-auth': user.token } })
+    axios.get(`${API_URL}/images/1/10`, { headers: { 'x-auth': user.token } })
       .then((response) => {
         const newImages = response.data;
         newImages.forEach((image) => {

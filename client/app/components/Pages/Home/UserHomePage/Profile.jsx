@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
@@ -19,13 +19,13 @@ const Profile = ({
 }) => {
   const { userName } = match.params;
   if (userName === user.userName) return <Redirect to="/profile" />;
-
+  const closeModalBtn = useRef(null);
   const isMyProfile = !userName;
 
   const [loader, setLoader] = useState(!isMyProfile);
   const [isUploadImageModal, changeIsUploadImageModal] = useState(null);
   const [uploadedImg, setUploadedImg] = useState(null);
-  const [imageDescription, setImageDescription] = useState(null);
+  const [imageDescription, setImageDescription] = useState('');
 
   const handleImageInputChange = (e) => {
     e.preventDefault();
@@ -56,6 +56,9 @@ const Profile = ({
           const image = response.data;
           image.user = user;
           _addImage(image);
+          setImageDescription('');
+          setUploadedImg(null);
+          closeModalBtn.current.click();
         })
         .catch((response) => {
           alert('Something is wrong, please try later');
@@ -70,6 +73,8 @@ const Profile = ({
       })
         .then(() => {
           _setProfileImage(uploadedImg);
+          closeModalBtn.current.click();
+          setUploadedImg(null);
         })
         .catch((response) => {
           // handle error
@@ -151,13 +156,13 @@ const Profile = ({
               />
               {isUploadImageModal ? (
                 <div className="form-group mt-2">
-                  <input type="text" placeholder="Description" className="w-100" onChange={handleImageDescriptionChange} />
+                  <input type="text" placeholder="Description" className="w-100" value={imageDescription} onChange={handleImageDescriptionChange} />
                 </div>
               ) : null}
 
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button ref={closeModalBtn} type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
               <button
                 onClick={handleImageUpload}
                 disabled={!isUploadImageModal ? !uploadedImg
