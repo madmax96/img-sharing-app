@@ -1,30 +1,12 @@
-// increment
 export const ACTION_NAMES = {
   ADD_IMAGE: 'ADD_IMAGE',
-  ADD_IMAGE_INDEX: 'ADD_IMAGE_INDEX',
   DELETE_IMAGE: 'DELETE_IMAGE',
-  DELETE_IMAGE_INDEX: 'DELETE_IMAGE_INDEX',
   LIKE_UNLIKE_IMAGE: 'LIKE_UNLIKE_IMAGE',
-  LIKE_UNLIKE_IMAGE_PROFILE: 'LIKE_UNLIKE_IMAGE_PROFILE',
-  NEW_IMAGES_FETCHED: 'NEW_IMAGES_FETCHED',
+  NEW_IMAGES_FETCHED_INDEX: 'NEW_IMAGES_FETCHED_INDEX',
+  NEW_IMAGES_FETCHED_USER: 'NEW_IMAGES_FETCHED_USER',
   SET_PROFILE_IMAGE: 'SET_PROFILE_IMAGE',
-  USER_LOGIN: 'USER_LOGIN',
-  USER_LOGOUT: 'USER_LOGOUT',
+  ADD_USER_INFO: 'ADD_USER_INFO',
 };
-
-
-export function userLogin(user) {
-  return {
-    type: ACTION_NAMES.USER_LOGIN,
-    user,
-  };
-}
-
-export function userLogout() {
-  return {
-    type: ACTION_NAMES.USER_LOGOUT,
-  };
-}
 
 export function addImage(image) {
   return {
@@ -33,51 +15,46 @@ export function addImage(image) {
   };
 }
 
-export function addImageIndex(image) {
+export function setProfileImage(imageData, userId) {
   return {
-    type: ACTION_NAMES.ADD_IMAGE_INDEX,
+    type: ACTION_NAMES.SET_PROFILE_IMAGE,
+    imageData,
+    userId,
+  };
+}
+export function deleteImage(image) {
+  return {
+    type: ACTION_NAMES.DELETE_IMAGE,
     image,
   };
 }
 
-export function setProfileImage(imageData) {
-  return {
-    type: ACTION_NAMES.SET_PROFILE_IMAGE,
-    imageData,
-  };
-}
-export function deleteImage(imageId) {
-  return {
-    type: ACTION_NAMES.DELETE_IMAGE,
-    imageId,
-  };
-}
 
-export function deleteImageIndex(imageId) {
-  return {
-    type: ACTION_NAMES.DELETE_IMAGE_INDEX,
-    imageId,
-  };
-}
-
-
-export function likeUnlikeImage(imageId) {
+export function likeUnlikeImage(image) {
   return {
     type: ACTION_NAMES.LIKE_UNLIKE_IMAGE,
-    imageId,
+    image,
   };
 }
 
-export function likeUnlikeImageProfile(imageId) {
+export function newImagesFetchedIndex(images) {
   return {
-    type: ACTION_NAMES.LIKE_UNLIKE_IMAGE_PROFILE,
-    imageId,
-  };
-}
-
-export function newImagesFetched(images) {
-  return {
-    type: ACTION_NAMES.NEW_IMAGES_FETCHED,
+    type: ACTION_NAMES.NEW_IMAGES_FETCHED_INDEX,
     images,
+  };
+}
+
+export function newImagesFetchedUser(images, userId) {
+  return {
+    type: ACTION_NAMES.NEW_IMAGES_FETCHED_USER,
+    images,
+    userId,
+  };
+}
+
+export function addUserInfo(user) {
+  return {
+    type: ACTION_NAMES.ADD_USER_INFO,
+    user,
   };
 }

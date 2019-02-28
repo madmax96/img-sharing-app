@@ -1,20 +1,13 @@
-import React from 'react';
-// import { Link } from 'react-router-dom';
-// import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React, { useContext } from 'react';
+import UserContext from '../../../UserContext';
+
 import LoginRegister from './LoginRegister';
 import UserPage from './UserHomePage/UserPage';
 
-const Home = ({ user }) => {
-  const ActiveComponent = user.token ? <UserPage /> : <LoginRegister />;
+const Home = () => {
+  const { userId } = useContext(UserContext);
+  const ActiveComponent = userId ? <UserPage /> : <LoginRegister />;
   return ActiveComponent;
 };
-const mapStateToProps = state => ({
-  user: state.user,
-});
 
-export default connect(mapStateToProps)(Home);
-
-
-Home.propTypes = {
-};
+export default Home;

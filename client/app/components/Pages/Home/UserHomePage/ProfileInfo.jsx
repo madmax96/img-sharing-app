@@ -2,6 +2,8 @@ import React from 'react';
 import {
   FaPlusCircle, FaHeart, FaUser, FaFileContract,
 } from 'react-icons/fa';
+import { Row, Col } from 'reactstrap';
+
 import HoverableImage from '../../../UI/HoverableImage';
 import PlaceholderImg from '../../../../../../public/img/placeholder.png';
 
@@ -15,8 +17,8 @@ export default ({
     </div>
   );
   return (
-    <div className="row align-items-center h-100 justify-content-center ">
-      <div className="col-6 col-lg-3 h-75">
+    <Row className="align-items-center h-100 justify-content-center ">
+      <Col className="h-75" xs="6" lg="3">
         {isMineProfile
           ? (
             <HoverableImage
@@ -27,7 +29,7 @@ export default ({
               content={HoverContent}
             />
           ) : Image}
-      </div>
+      </Col>
       <div className="col-6 col-lg-4 mt-4 text-left">
         <span className="text-primary">
           <FaUser className="mr-2" />
@@ -56,6 +58,6 @@ export default ({
           />
         </div>
       ) : null}
-    </div>
+    </Row>
   );
 };

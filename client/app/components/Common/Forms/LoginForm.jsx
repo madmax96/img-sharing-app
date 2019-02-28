@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import Loader from '../../UI/Loader';
 import { isEmailValid, isPasswordValid } from '../../../utils/validation';
 import Config from '../../../config';
-import { userLogin } from '../../../actions/actionCreators';
+import { addUserInfo } from '../../../actions/actionCreators';
+import UserContext from '../../../UserContext';
 
 const { API_URL } = Config;
 class LoginForm extends React.Component {
@@ -29,16 +30,16 @@ class LoginForm extends React.Component {
     this.setState({ loader: true });
     const { userEmail: email, password } = this.state;
     const { login } = this.props;
+    const { setUserInfo } = this.context;
     e.preventDefault();
     axios.post(`${API_URL}/users/login`, {
       email, password,
     }).then((response) => {
       const user = response.data;
-      console.log(response.headers);
       user.token = response.headers['x-auth'];
-      console.log(user.token);
       localStorage.setItem('token', user.token);
       login(user);
+      setUserInfo({ token: user.token, userId: user._id });
     })
       .catch(err => console.log(err));
   }
@@ -111,7 +112,7 @@ class LoginForm extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  login: user => dispatch(userLogin(user)),
+  login: user => dispatch(addUserInfo(user)),
 });
-
+LoginForm.contextType = UserContext;
 export default connect(null, mapDispatchToProps)(LoginForm);

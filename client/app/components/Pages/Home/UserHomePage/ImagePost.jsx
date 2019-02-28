@@ -1,28 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { FaHeart } from 'react-icons/fa';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import ImagePostUI from '../../../UI/ImagePost';
 import Config from '../../../../config';
+import UserContext from '../../../../UserContext';
 import {
-  likeUnlikeImage, deleteImage, deleteImageIndex,
+  likeUnlikeImage, deleteImage,
 } from '../../../../actions/actionCreators';
 import placeholderImg from '../../../../../../public/img/placeholder.png';
 
 const { API_URL } = Config;
 
 const ImagePost = ({
-  thisUser, likedBy, _id, description, url, user, likedByMe, likeUnlikeImage, showDeleteButton, deleteImage,
+  likedBy, _id, description, url, user, likedByMe, likeUnlikeImage, showDeleteButton, deleteImage, users,
 }) => {
   const {
-    _id: userId, email, fullName, userName, profileImage,
+    _id: imageUserId, email, fullName, userName, profileImage,
   } = user;
   const [likes, toggleLikesSection] = useState(false);
-
+  const { userId, token } = useContext(UserContext);
+  const thisUser = users[userId];
   const fetchLikes = () => {
     if (likes) return toggleLikesSection(false);
-    axios.get(`${API_URL}/image/${_id}/likes`, { headers: { 'x-auth': thisUser.token } })
+    axios.get(`${API_URL}/image/${_id}/likes`, { headers: { 'x-auth': token } })
       .then((response) => {
         const users = response.data;
         toggleLikesSection(users);
@@ -32,7 +34,7 @@ const ImagePost = ({
       });
   };
   const _deleteImage = () => {
-    axios.delete(`${API_URL}/images/${_id}`, { headers: { 'x-auth': thisUser.token } })
+    axios.delete(`${API_URL}/images/${_id}`, { headers: { 'x-auth': token } })
       .then(() => {
         deleteImage(_id);
       }).catch((err) => {
@@ -41,7 +43,7 @@ const ImagePost = ({
       });
   };
   const _likeUnlikeImage = () => {
-    axios.patch(`${API_URL}/images/${_id}`, { [likedByMe ? 'unlike' : 'like']: true }, { headers: { 'x-auth': thisUser.token } })
+    axios.patch(`${API_URL}/images/${_id}`, { [likedByMe ? 'unlike' : 'like']: true }, { headers: { 'x-auth': token } })
       .then(() => {
         likeUnlikeImage(_id);
       }).catch((err) => {
@@ -53,11 +55,11 @@ const ImagePost = ({
     <ImagePostUI>
       <ImagePostUI.Header>
         <ImagePostUI.Header.Img
-          src={thisUser._id === userId ? thisUser.profileImage : (profileImage || placeholderImg)}
+          src={imageUserId === userId ? thisUser.profileImage : (profileImage || placeholderImg)}
         />
 
         <NavLink to={`/users/${userName}`} className="mr-auto pl-1">{userName}</NavLink>
-        <a target="_blank" download={url} href={`${API_URL}/image/${url}?xAuth=${thisUser.token}`} className="btn btn-sm btn-outline-info mr-1">Download</a>
+        <a target="_blank" download={url} href={`${API_URL}/image/${url}?xAuth=${token}`} className="btn btn-sm btn-outline-info mr-1">Download</a>
         {showDeleteButton ? (
           <button
             type="button"
@@ -89,7 +91,7 @@ const ImagePost = ({
       <ImagePostUI.Footer>
         <div className=" h-100">
           <div className=" d-flex align-items-center">
-            {thisUser._id !== userId ? (
+            {imageUserId !== userId ? (
               <span style={{ cursor: 'pointer' }} onClick={() => _likeUnlikeImage()}>
                 <FaHeart className="ml-2" color={likedByMe ? '#B83439' : 'grey'} />
               </span>
@@ -107,13 +109,12 @@ const ImagePost = ({
 };
 
 const mapDispatchToProps = dispatch => ({
-  likeUnlikeImage: (id) => {
-    dispatch(likeUnlikeImage(id));
+  likeUnlikeImage: (image) => {
+    dispatch(likeUnlikeImage(image));
   },
-  deleteImage: (id) => {
-    dispatch(deleteImage(id));
-    dispatch(deleteImageIndex(id));
+  deleteImage: (image) => {
+    dispatch(deleteImage(image));
   },
 });
-const mapStateToProps = state => ({ thisUser: state.user });
+const mapStateToProps = state => ({ users: state.users });
 export default connect(mapStateToProps, mapDispatchToProps)(ImagePost);
