@@ -52,7 +52,7 @@ const App = () => {
       axios.get(`${API_URL}/users/me`, { headers: { 'x-auth': token } })
         .then((response) => {
           const user = response.data;
-          setUserInfo({ userId: user._id, token });
+          setUserInfo({ userId: user._id, token, userName: user.userName });
           store.dispatch(addUserInfo(user));
           setIsLoading(false);
         }).catch((e) => {

@@ -4,8 +4,8 @@ import {
 } from 'react-icons/fa';
 import { Row, Col } from 'reactstrap';
 
-import HoverableImage from '../../../UI/HoverableImage';
-import PlaceholderImg from '../../../../../../public/img/placeholder.png';
+import HoverableImage from '../UI/HoverableImage';
+import PlaceholderImg from '../../../../public/img/placeholder.png';
 
 export default ({
   profileImage, userName, fullName, totalLikes, totalPosts, email, isMineProfile, onProfileIconClick, onAddImageClick,

@@ -3,13 +3,13 @@ import { FaHeart } from 'react-icons/fa';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
-import ImagePostUI from '../../../UI/ImagePost';
-import Config from '../../../../config';
-import UserContext from '../../../../UserContext';
+import ImagePostUI from '../UI/ImagePost';
+import Config from '../../config';
+import UserContext from '../../UserContext';
 import {
   likeUnlikeImage, deleteImage,
-} from '../../../../actions/actionCreators';
-import placeholderImg from '../../../../../../public/img/placeholder.png';
+} from '../../actions/actionCreators';
+import placeholderImg from '../../../../public/img/placeholder.png';
 
 const { API_URL } = Config;
 
@@ -17,11 +17,11 @@ const ImagePost = ({
   likedBy, _id, description, url, user, likedByMe, likeUnlikeImage, showDeleteButton, deleteImage, users,
 }) => {
   const {
-    _id: imageUserId, email, fullName, userName, profileImage,
+    _id: imageUserId, email, fullName, userName: imageUserName, profileImage,
   } = user;
   const [likes, toggleLikesSection] = useState(false);
-  const { userId, token } = useContext(UserContext);
-  const thisUser = users[userId];
+  const { token, userName, userId } = useContext(UserContext);
+  const thisUser = users[userName];
   const fetchLikes = () => {
     if (likes) return toggleLikesSection(false);
     axios.get(`${API_URL}/image/${_id}/likes`, { headers: { 'x-auth': token } })
@@ -45,7 +45,9 @@ const ImagePost = ({
   const _likeUnlikeImage = () => {
     axios.patch(`${API_URL}/images/${_id}`, { [likedByMe ? 'unlike' : 'like']: true }, { headers: { 'x-auth': token } })
       .then(() => {
-        likeUnlikeImage(_id);
+        likeUnlikeImage({
+          likedBy, _id, description, url, user, likedByMe,
+        });
       }).catch((err) => {
         console.log(err);
         alert('Something is wrong. Please try later');
@@ -58,7 +60,7 @@ const ImagePost = ({
           src={imageUserId === userId ? thisUser.profileImage : (profileImage || placeholderImg)}
         />
 
-        <NavLink to={`/users/${userName}`} className="mr-auto pl-1">{userName}</NavLink>
+        <NavLink to={`/users/${imageUserName}`} className="mr-auto pl-1">{imageUserName}</NavLink>
         <a target="_blank" download={url} href={`${API_URL}/image/${url}?xAuth=${token}`} className="btn btn-sm btn-outline-info mr-1">Download</a>
         {showDeleteButton ? (
           <button
@@ -80,19 +82,22 @@ const ImagePost = ({
                 <ImagePostUI.Header.Img
                   src={user.profileImage}
                 />
-                <NavLink to={`/users/${user.userName}`} className="mr-auto pl-1">{user.userName}</NavLink>
+                <NavLink to={`/users/${user.imageUserName}`} className="mr-auto pl-1">{user.imageUserName}</NavLink>
               </div>
             ))}
           </div>
 
         </ImagePostUI.Content>
       )
-        : <ImagePostUI.Image src={`${API_URL}/image/${url}?xAuth=${localStorage.getItem('token')}`} /> }
+        : <ImagePostUI.Image src={`${API_URL}/image/${url}?xAuth=${token}`} /> }
       <ImagePostUI.Footer>
         <div className=" h-100">
           <div className=" d-flex align-items-center">
             {imageUserId !== userId ? (
-              <span style={{ cursor: 'pointer' }} onClick={() => _likeUnlikeImage()}>
+              <span
+                style={{ cursor: 'pointer' }}
+                onClick={() => _likeUnlikeImage()}
+              >
                 <FaHeart className="ml-2" color={likedByMe ? '#B83439' : 'grey'} />
               </span>
             ) : null}

@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import Config from '../../../../config';
-import { newImagesFetchedIndex as newImagesFetchedIndexAction } from '../../../../actions/actionCreators';
-import UserContext from '../../../../UserContext';
-import Navbar from './Navbar';
-import StyledText from '../../../UI/StyledText';
-import Loader from '../../../UI/Loader';
-import ImagePostsContainer from './ImagePostsContainer';
+import Config from '../../../config';
+import { newImagesFetchedIndex as newImagesFetchedIndexAction } from '../../../actions/actionCreators';
+import UserContext from '../../../UserContext';
+import Navbar from '../../Common/Navbar';
+import StyledText from '../../UI/StyledText';
+import Loader from '../../UI/Loader';
+import ImagePostsContainer from '../../Common/ImagePostsContainer';
 
 const { API_URL } = Config;
 

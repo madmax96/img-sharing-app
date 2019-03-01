@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Button } from 'reactstrap';
-import NavbarUI from '../../../UI/Navbar';
-import StyledText from '../../../UI/StyledText';
-import UserContext from '../../../../UserContext';
+import NavbarUI from '../UI/Navbar';
+import StyledText from '../UI/StyledText';
+import UserContext from '../../UserContext';
 
 const Navbar = () => {
   const { setUserInfo } = useContext(UserContext);

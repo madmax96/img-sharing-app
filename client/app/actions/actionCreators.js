@@ -15,11 +15,11 @@ export function addImage(image) {
   };
 }
 
-export function setProfileImage(imageData, userId) {
+export function setProfileImage(imageData, userName) {
   return {
     type: ACTION_NAMES.SET_PROFILE_IMAGE,
     imageData,
-    userId,
+    userName,
   };
 }
 export function deleteImage(image) {
@@ -44,11 +44,11 @@ export function newImagesFetchedIndex(images) {
   };
 }
 
-export function newImagesFetchedUser(images, userId) {
+export function newImagesFetchedUser(images, userName) {
   return {
     type: ACTION_NAMES.NEW_IMAGES_FETCHED_USER,
     images,
-    userId,
+    userName,
   };
 }
 

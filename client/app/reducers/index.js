@@ -20,24 +20,24 @@ function rootReducer(state, action) {
   switch (action.type) {
     case ADD_USER_INFO: {
       const { user } = action;
-      const { _id: userId } = user;
+      const { userName } = user;
       return {
         users: {
           ...state.users,
-          [userId]: user,
+          [userName]: user,
         },
         indexImages: state.indexImages,
       };
     }
     case ADD_IMAGE: {
       const { image } = action;
-      const { _id: userId } = image.user;
+      const { userName } = image.user;
       return {
         users: {
           ...state.users,
-          [userId]: {
-            ...state.users[userId],
-            images: [image, ...state.users[userId].images],
+          [userName]: {
+            ...state.users[userName],
+            images: [image, ...state.users[userName].images],
           },
         },
         indexImages: [image, ...state.indexImages],
@@ -46,26 +46,26 @@ function rootReducer(state, action) {
     case DELETE_IMAGE: {
       const { image } = action;
       const { _id: imageId } = image;
-      const { _id: userId } = image.user;
+      const { userName } = image.user;
       return {
         indeximages: state.indexImages.filter(image => image._id !== imageId),
         users: {
           ...state.users,
-          [userId]: {
-            ...state.users[userId],
-            images: state.users[userId].images.filter(image => image._id !== imageId),
+          [userName]: {
+            ...state.users[userName],
+            images: state.users[userName].images.filter(image => image._id !== imageId),
           },
         },
       };
     }
     case SET_PROFILE_IMAGE: {
-      const { imageData, userId } = action;
+      const { imageData, userName } = action;
       return {
         indexImages: state.indexImages,
         users: {
           ...state.users,
-          [userId]: {
-            ...state.users[userId],
+          [userName]: {
+            ...state.users[userName],
             profileImage: imageData,
           },
         },
@@ -75,23 +75,8 @@ function rootReducer(state, action) {
     case LIKE_UNLIKE_IMAGE: {
       const { image } = action;
       const { _id: imageId } = image;
-      const { _id: userId } = image.user;
-      return {
-        users: {
-          ...state.users,
-          [userId]: {
-            ...state.users[userId],
-            images: state.users[userId].images.map((image) => {
-              if (image._id === imageId) {
-                return {
-                  ...image,
-                  likedByMe: !image.likedByMe,
-                };
-              }
-              return image;
-            }),
-          },
-        },
+      const { userName } = image.user;
+      const newState = {
         indexImages: state.indexImages.map((image) => {
           if (image._id === imageId) {
             return {
@@ -102,6 +87,26 @@ function rootReducer(state, action) {
           return image;
         }),
       };
+      if (state.users[userName]) {
+        newState.users = {
+          ...state.users,
+          [userName]: {
+            ...state.users[userName],
+            images: state.users[userName].images.map((image) => {
+              if (image._id === imageId) {
+                return {
+                  ...image,
+                  likedByMe: !image.likedByMe,
+                };
+              }
+              return image;
+            }),
+          },
+        };
+      } else {
+        newState.users = state.users;
+      }
+      return newState;
     }
 
     case NEW_IMAGES_FETCHED_INDEX:
@@ -110,13 +115,13 @@ function rootReducer(state, action) {
         indexImages: [...state.indexImages, ...action.images],
       };
     case NEW_IMAGES_FETCHED_USER: {
-      const { userId, images } = action;
+      const { userName, images } = action;
       return {
         users: {
           ...state.users,
-          [userId]: {
-            ...state.users[userId],
-            images: [...state.users[userId].images, ...images],
+          [userName]: {
+            ...state.users[userName],
+            images: [...state.users[userName].images, ...images],
           },
         },
         indexImages: state.indexImages,

@@ -39,7 +39,7 @@ class LoginForm extends React.Component {
       user.token = response.headers['x-auth'];
       localStorage.setItem('token', user.token);
       login(user);
-      setUserInfo({ token: user.token, userId: user._id });
+      setUserInfo({ token: user.token, userId: user._id, userName: user.userName });
     })
       .catch(err => console.log(err));
   }
