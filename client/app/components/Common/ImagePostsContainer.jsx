@@ -17,7 +17,5 @@ export default ({ images, imagesUser, showDeleteButton }) => (
         </div>
       ))}
     </div>
-
-
   </div>
 );

@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Loader from './Loader';
 
-
 const ImagePost = styled.div`
     height:30rem;
     min-height:600px;
     border-radius:5px;
     box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-
 `;
 
 ImagePost.Header = styled.div`

@@ -11,7 +11,7 @@ fs.unlink = util.promisify(fs.unlink);
 async function getImages(req,res){
 
     let {page, perPage} = req.params;
-    
+
     page = +page;
     perPage= +perPage;
 
@@ -53,7 +53,7 @@ async function getImageLikes(req,res){
     const users = await Promise.all(likedBy.map(userId => UserModel.findById(userId)));
     res.send(users);
 }
-// changing of  description or liking 
+// changing of  description or liking
 
 async function updateImage(req,res){
     const { description, like, unlike } = req.body;
@@ -118,21 +118,21 @@ async function crateImage(req,res){
 async function deleteImage(req,res){
 
     const { imageId } = req.params;
-    if(!mongoose.Types.ObjectId.isValid(imageId)){
+    if (!mongoose.Types.ObjectId.isValid(imageId)){
         return res.sendStatus(400);
       }
     const image = await ImageModel.findById(imageId);
-    if(!image){
+    if (!image){
         return res.sendStatus(404);
     }
-    if(image.userId.toString() !== req.user._id.toString()){
+    if (image.userId.toString() !== req.user._id.toString()){
         return res.sendStatus(403);
     }
-    try{
+    try {
         await image.delete();
         await fs.unlink(`uploads/${image.url}`);
         res.sendStatus(200);
-    }catch(e){
+    } catch(e) {
         console.log(e);
         res.sendStatus(500);
     }

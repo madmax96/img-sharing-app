@@ -17,7 +17,7 @@ async function registerUser(req,res){
 async function loginUser(req,res){
 
     const { email,password } = req.body;
-    try { 
+    try {
       const user = await UserModel.findByCredentials(email, password);
       const token = await user.generateAuthToken();
       const userImages = await UserModel.getUserImages(user._id);
@@ -71,7 +71,7 @@ async function getUser(req,res){
 
   const { userName } = req.params;
 
-  try { 
+  try {
     const user = await UserModel.findOne({userName});
     if(!user){
       return res.sendStatus(404);
@@ -84,16 +84,15 @@ async function getUser(req,res){
     console.log(e)
     res.sendStatus(400);
   }
-  
 }
 
 async function isEmailAvailable (req,res) {
 
   const { email } = req.params;
-  try{ 
+  try {
     const user = await UserModel.findOne({email});
     res.sendStatus(user ? 400 : 200);
-  }catch(e) {
+  } catch(e) {
     res.sendStatus(500);
   }
  }
@@ -102,10 +101,10 @@ async function isEmailAvailable (req,res) {
 
   const {userName} = req.params;
 
-  try{ 
+  try{
     const user = await UserModel.findOne({userName});
     res.sendStatus(user ? 400 : 200);
-    
+
   }catch(e) {
     res.sendStatus(500);
   }
