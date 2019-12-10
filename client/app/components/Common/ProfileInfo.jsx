@@ -2,13 +2,18 @@ import React from 'react';
 import {
   FaPlusCircle, FaHeart, FaUser, FaFileContract,
 } from 'react-icons/fa';
-import { Row, Col } from 'reactstrap';
-
 import HoverableImage from '../UI/HoverableImage';
 import PlaceholderImg from '../../../../public/img/placeholder.png';
 
 export default ({
-  profileImage, userName, fullName, totalLikes, totalPosts, email, isMineProfile, onProfileIconClick, onAddImageClick,
+  profileImage, userName,
+  fullName,
+  totalLikes,
+  totalPosts,
+  email,
+  isMineProfile,
+  onProfileIconClick,
+  onAddImageClick,
 }) => {
   const Image = <img src={profileImage || PlaceholderImg} alt="user profile " className=" mt-4 img-fluid img-thumbnail h-100" style={{ borderRadius: '50%' }} />;
   const HoverContent = (
@@ -17,9 +22,9 @@ export default ({
     </div>
   );
   return (
-    <Row className="align-items-center h-100 justify-content-center ">
-      <Col className="h-75" xs="6" lg="3">
-        {isMineProfile
+    <div className="d-flex align-items-center h-100 justify-content-center">
+      <div className="h-75 col-6 col-lg-3">
+        { isMineProfile
           ? (
             <HoverableImage
               onClick={onProfileIconClick}
@@ -29,7 +34,7 @@ export default ({
               content={HoverContent}
             />
           ) : Image}
-      </Col>
+      </div>
       <div className="col-6 col-lg-4 mt-4 text-left">
         <span className="text-primary">
           <FaUser className="mr-2" />
@@ -58,6 +63,6 @@ export default ({
           />
         </div>
       ) : null}
-    </Row>
+    </div>
   );
 };

@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import React from 'react';
 
-const spinny = keyframes` 
+const spinny = keyframes`
   0% {
     transform: rotate(0deg) scale(1);
   }
@@ -20,8 +20,8 @@ const Loader = styled.div`
   border-radius: 50%;
   position: relative;
   display: inline-block;
- 
-  &:after{
+
+  &:after {
     content: "";
     display: block;
     width: 60px;

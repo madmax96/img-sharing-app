@@ -1,4 +1,7 @@
 import 'babel-polyfill';
+import './styles/style.scss';
+// import '';
+
 import React, {
   useContext, useEffect, useState,
 } from 'react';
@@ -11,7 +14,6 @@ import { Provider } from 'react-redux';
 import axios from 'axios';
 import Config from './config';
 import UserContext, { UserContextProvider } from './UserContext';
-import './styles/style.scss';
 import withErrorBoundary from './HOC/ErrorBoundary';
 import withPrivateRoute from './HOC/PrivateRouter';
 import Home from './components/Pages/Home';
@@ -21,7 +23,6 @@ import { addUserInfo } from './actions/actionCreators';
 import Profile from './components/Pages/Profile';
 import MyProfile from './components/Pages/MyProfile';
 
-import 'bootstrap';
 
 const PrivateRoute = withPrivateRoute(Route);
 const history = createBrowserHistory();
