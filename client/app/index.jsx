@@ -37,11 +37,13 @@ const r = (
     </Router>
   </Provider>
 );
+
 const AppLoader = (
   <div className="row vh-100 align-items-center justify-content-center">
     <Loader />
   </div>
 );
+
 const App = () => {
   const { setUserInfo } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);

@@ -1,0 +1,22 @@
+version: '3'
+services:
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: ./server
+    ports:
+      - "8888:8888"
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      - MONGO_URL=mongodb://madmax96:madmax96@ds239055.mlab.com:39055/img-share
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    ports:
+      - "1234:1234"
+    volumes:
+      - /app/node_modules
+      - ./client:/app

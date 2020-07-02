@@ -4,8 +4,8 @@ const ImageControllers = require('./controllers/ImageControllers');
 
 const authMiddleware = require('./middlewares/authenticate');
 const uploadImageMiddleware = require('./middlewares/uploadImage');
-const routes = [
 
+const routes = [
     {method:'post',path:'/users', handler:UserControllers.registerUser},
     {method:'post',path:'/users/login', handler:UserControllers.loginUser},
     {method:'post',path:'/users/logout', handler:[ authMiddleware,UserControllers.logoutUser ]},
@@ -20,7 +20,6 @@ const routes = [
     {method:'patch',path:'/images/:imageId',handler:[authMiddleware,ImageControllers.updateImage]},
     {method:'post',path:'/images/',handler:[authMiddleware, uploadImageMiddleware, ImageControllers.crateImage]},
     {method:'delete',path:'/images/:imageId',handler:[authMiddleware,ImageControllers.deleteImage]},
-
 ];
 
 module.exports = function initRoutes(app) {
