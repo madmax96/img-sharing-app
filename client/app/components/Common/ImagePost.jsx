@@ -9,7 +9,7 @@ import UserContext from '../../UserContext';
 import {
   likeUnlikeImage, deleteImage,
 } from '../../actions/actionCreators';
-import placeholderImg from '../../../../public/img/placeholder.png';
+import placeholderImg from '../../../public/img/placeholder.png';
 
 const { API_URL } = Config;
 
@@ -36,7 +36,7 @@ const ImagePost = ({
   const _deleteImage = () => {
     axios.delete(`${API_URL}/images/${_id}`, { headers: { 'x-auth': token } })
       .then(() => {
-        deleteImage(_id);
+        deleteImage({_id,user});
       }).catch((err) => {
         console.log(err);
         alert('Something is wrong. Please try later');

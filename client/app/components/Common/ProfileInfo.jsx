@@ -3,7 +3,7 @@ import {
   FaPlusCircle, FaHeart, FaUser, FaFileContract,
 } from 'react-icons/fa';
 import HoverableImage from '../UI/HoverableImage';
-import PlaceholderImg from '../../../../public/img/placeholder.png';
+import PlaceholderImg from '../../../public/img/placeholder.png';
 
 export default ({
   profileImage, userName,

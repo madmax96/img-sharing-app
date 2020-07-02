@@ -22,7 +22,6 @@ import { addUserInfo } from './actions/actionCreators';
 import Profile from './components/Pages/Profile';
 import MyProfile from './components/Pages/MyProfile';
 
-
 const PrivateRoute = withPrivateRoute(Route);
 const history = createBrowserHistory();
 const { API_URL } = Config;

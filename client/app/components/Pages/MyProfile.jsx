@@ -4,7 +4,7 @@ import React, {
 import { connect } from 'react-redux';
 import axios from 'axios';
 import UserContext from '../../UserContext';
-import PlaceholderImg from '../../../../public/img/placeholder.png';
+import PlaceholderImg from '../../../public/img/placeholder.png';
 import encodeImageAsUrl from '../../utils/encodeImageAsUrl';
 import Navbar from '../Common/Navbar';
 import ImagePostsContainer from '../Common/ImagePostsContainer';
