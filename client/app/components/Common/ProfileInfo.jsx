@@ -1,12 +1,11 @@
-import React from 'react';
-import {
-  FaPlusCircle, FaHeart, FaUser, FaFileContract,
-} from 'react-icons/fa';
-import HoverableImage from '../UI/HoverableImage';
-import PlaceholderImg from '../../../public/img/placeholder.png';
+import React from "react";
+import { FaPlusCircle, FaHeart, FaUser, FaFileContract } from "react-icons/fa";
+import HoverableImage from "../UI/HoverableImage";
+import PlaceholderImg from "../../../public/img/placeholder.png";
 
 export default ({
-  profileImage, userName,
+  profileImage,
+  userName,
   fullName,
   totalLikes,
   totalPosts,
@@ -15,7 +14,14 @@ export default ({
   onProfileIconClick,
   onAddImageClick,
 }) => {
-  const Image = <img src={profileImage || PlaceholderImg} alt="user profile " className=" mt-4 img-fluid img-thumbnail h-100" style={{ borderRadius: '50%' }} />;
+  const Image = (
+    <img
+      src={profileImage || PlaceholderImg}
+      alt="user profile "
+      className=" mt-4 img-fluid img-thumbnail h-100"
+      style={{ borderRadius: "50%" }}
+    />
+  );
   const HoverContent = (
     <div className="d-flex h-100 align-items-center justify-content-center">
       {<FaPlusCircle size={80} />}
@@ -24,16 +30,17 @@ export default ({
   return (
     <div className="d-flex align-items-center h-100 justify-content-center">
       <div className="h-75 col-6 col-lg-3">
-        { isMineProfile
-          ? (
-            <HoverableImage
-              onClick={onProfileIconClick}
-              data-toggle="modal"
-              data-target="#uploadImage"
-              image={Image}
-              content={HoverContent}
-            />
-          ) : Image}
+        {isMineProfile ? (
+          <HoverableImage
+            onClick={onProfileIconClick}
+            data-toggle="modal"
+            data-target="#uploadImage"
+            image={Image}
+            content={HoverContent}
+          />
+        ) : (
+          Image
+        )}
       </div>
       <div className="col-6 col-lg-4 mt-4 text-left">
         <span className="text-primary">
@@ -58,7 +65,7 @@ export default ({
             data-target="#uploadImage"
             className="text-primary"
             size="100"
-            style={{ cursor: 'pointer' }}
+            style={{ cursor: "pointer" }}
             onClick={onAddImageClick}
           />
         </div>

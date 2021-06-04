@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class ErrorBoundary extends React.Component {
       return (
         <div>
           <h2>Something went wrong.</h2>
-          <details style={{ whiteSpace: 'pre-wrap' }}>
+          <details style={{ whiteSpace: "pre-wrap" }}>
             {error && error.toString()}
             <br />
             {errorInfo.componentStack}
@@ -35,6 +35,6 @@ class ErrorBoundary extends React.Component {
   }
 }
 function withErrorBoundary(C) {
-  return props => <ErrorBoundary>{<C {...props} />}</ErrorBoundary>;
+  return (props) => <ErrorBoundary>{<C {...props} />}</ErrorBoundary>;
 }
 export default withErrorBoundary;
